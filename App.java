@@ -1,6 +1,5 @@
-package com.Infobeans.Assignment_65;
+package com.Infobeans.assignment_66_ques_1;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -10,265 +9,230 @@ import org.hibernate.Transaction;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.internal.build.AllowSysOut;
 
-/**
- * Hello world!
- *
- */
+
+
 public class App 
 {
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
-        Scanner sc = new Scanner(System.in);
-        
-        
-        StandardServiceRegistry registry = new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
-        SessionFactory sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
-        Session s = sessionFactory.openSession();
-        
-        System.out.println("welcome kk");
-        while(true) {
-        	System.out.println("1. Add Department with Employees\r\n"
-        			+ "2. Add Employee to Department\r\n"
-        			+ "3. View All Departments and Employees\r\n"
-        			+ "4. Update Employee Salary\r\n"
-        			+ "5. Update Department Name\r\n"
-        			+ "6. Delete Employee\r\n"
-        			+ "7. Delete Department\r\n"
-        			+ "8. Find Employees by Department (HQL)\r\n"
-        			+ "9. Find Department by Employee Name (HQL)\r\n"
-        			+ "10. List Employees with Salary > given amount (HQL)\r\n"
-        			+ "11. List Departments with more than N employees (HQL)\r\n"
-        			+ "0. Exit");
-        
-        int choice = sc.nextInt();
-        sc.nextLine();
-        switch(choice) {
-       
-        case 1 : 
-        	Transaction t1=s.beginTransaction();
-        	System.out.println("enter employee id: ");
-        	int impId = sc.nextInt();
-        	System.out.println("enter Employee salary : ");
-        	double salary  = sc.nextDouble();
-        	sc.nextLine();
-        	System.out.println("enter Employee name: ");
-        	String name = sc.nextLine();
-        	System.out.println("enter Employee designation : ");
-        	String designation = sc.nextLine();
-        	
-//        	ArrayList<Employee> el = new ArrayList<Employee>();
+    	 System.out.println( "enter in new world" );
+         Scanner sc = new Scanner(System.in);
+         StandardServiceRegistry registry = new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
+         SessionFactory sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
+         Session session = sessionFactory.openSession();
+         
+         while(true) {
+         	System.out.println("1. Add Library with Books\r\n"
+         			+ "2. Add Book to Library\r\n"
+         			+ "3. View All Libraries and Books\r\n"
+         			+ "4. Update Book Price\r\n"
+         			+ "5. Update Library Name\r\n"
+         			+ "6. Delete Book\r\n"
+         			+ "7. Delete Library\r\n"
+         			+ "8. Find Books by Library (HQL)\r\n"
+         			+ "9. Find Library by Book Title (HQL)\r\n"
+         			+ "10.  List Books with Price > given amount (HQL)\r\n"
+         			+ "11. List Libraries with more than N books (HQL)\r\n"
+         			+ "Exit\r\n"
+         			+ "");
+             int choice = sc.nextInt();
+             sc.nextLine();
+             switch(choice) {
+             case 1 : 
+            	Transaction ts = session.beginTransaction();
+               	System.out.println("enter bookId ");
+               	int bookId = sc.nextInt();
+                sc.nextLine();
+             	System.out.println("enter title ");
+             	String title = sc.nextLine();
+             	System.out.println("enter author ");
+             	String author = sc.nextLine();
+             	System.out.println("enter price ");
+             	int price = sc.nextInt();
+             	sc.nextLine();
+             	Books b = new Books();
+             	b.setAuthor(author);
+             	b.setBookId(bookId);
+             	b.setPrice(price);
+             	b.setTitle(title);
+             	
+              	System.out.println("enter libraryId ");
+              	int libraryId = sc.nextInt();
+              	 sc.nextLine();
+             	System.out.println("enter libraryName ");
+             	String libraryName = sc.nextLine();
+             	System.out.println("enter location ");
+             	String location = sc.nextLine();
+             	
+             	Library l = new Library();
+             	l.setLibraryId(libraryId);
+             	l.setLibraryName(libraryName);
+             	l.setLocation(location);
+             	l.getBooks().add(b);
+             	b.setLibrary(l); 
+             	session.persist(l);
+             	ts.commit();
+                break;
+             
+             case 2 : 
+             	Transaction ts2 = session.beginTransaction();
+               	System.out.println("enter bookId ");
+               	int bookId2 = sc.nextInt();
+                sc.nextLine();
+             	System.out.println("enter title ");
+             	String title2 = sc.nextLine();
+             	System.out.println("enter author ");
+             	String author2 = sc.nextLine();
+             	System.out.println("enter price ");
+             	int price2 = sc.nextInt();
+             	sc.nextLine();
+             	Books b2 = new Books();
+             	b2.setAuthor(author2);
+             	b2.setBookId(bookId2);
+             	b2.setPrice(price2);
+             	b2.setTitle(title2);
+             	
+             	System.out.println("enter library Id ");
+             	int libId = sc.nextInt();
+             	sc.nextLine();
+             	Library lib = session.get(Library.class, libId );
+             	lib.getBooks().add(b2);
+             	b2.setLibrary(lib);
+             	session.persist(b2);
+             	ts2.commit();
 
-        	Employee e = new Employee();
-        	
-        	e.setId(impId);
-        	e.setName(name);
-        	e.setDegination(designation);
-        	e.setSalary(salary);
-        	
-//        	el.add(e);
-        	
-        	Department d = new Department();
-        	System.out.println("enter Department id: ");
-        	int depId = sc.nextInt();
-        	sc.nextLine();
-        	System.out.println("enter Department name: ");
-        	String depName = sc.nextLine();
-        	System.out.println("enter Department location : ");
-        	String location = sc.nextLine();
-        	d.setDeptId(depId);
-        	d.setDeptName(depName);
-        	d.setLocation(location);
-        	d.getEmployee().add(e);
-        	e.setDepartment(d);
-        	s.persist(d);
-        	t1.commit();
-        	s.clear();
-        	break;
-        	
-        case 2 : 
-        	System.out.println("enter employee id: ");
-        	int impId1 = sc.nextInt();
-        	System.out.println("enter Employee salary : ");
-        	double salary1  = sc.nextDouble();
-        	sc.nextLine();
-        	System.out.println("enter Employee name: ");
-        	String name1 = sc.nextLine();
-        	System.out.println("enter Employee designation : ");
-        	String designation1 = sc.nextLine();
-        	
-        	Transaction t2=s.beginTransaction();
+             	break;
+             	
+             case 3 :
+            	 List<Library> library = session.createQuery("from Library", Library.class).getResultList();
+            	 if(library != null) {
+            		 for(Library val:library) {
+            			 System.out.println(val +" "+val.getBooks());
+            		 }
+            	 } else {
+            		 System.out.println("not found!!");
+            	 }
+             	
+             	break;
+             	
+             case 4 :
+              	Transaction ts3 = session.beginTransaction();
 
-        	Employee e2 = new Employee();
-        	
-        	e2.setId(impId1);
-        	e2.setName(name1);
-        	e2.setDegination(designation1);
-        	e2.setSalary(salary1);
-        	        	
-        	System.out.println("enter id which department you want to add this imployee ");
-        	int depId2 = sc.nextInt();
-        	sc.nextLine();
-
-        	Department d1 = s.get(Department.class, depId2);
-        	d1.getEmployee().add(e2);
-        	e2.setDepartment(d1);
-        	s.persist(e2);
-        	t2.commit();
-        	
-        	break;
-        	
-        case 3 : 
-        	List<Department> department = s.createQuery("from Department", Department.class).getResultList();      	
-        	if(department != null) {
-        		for(Department val: department) {
-        			System.out.println(val + " "+val.getEmployee() );
-        		}
-        	} else {
-        		System.out.println("list is empty may be");
-        	}
-        	break; 
-        	
-        case 4 : 
-        	Transaction t3=s.beginTransaction();
-        	System.out.println("enter employee id for update salary : ");
-        	int id = sc.nextInt();
-        	sc.nextLine();
-        	System.out.println("enter employee new salary : ");
-        	double newSalary = sc.nextDouble();
-        	     	
-        	Employee updateE = s.get(Employee.class, id);
-        	if (updateE != null) {
-            	updateE.setSalary(newSalary);
-            	s.merge(updateE);
-            	t3.commit();
-                System.out.println("Salary updated successfully!");
-        	} else {
-        		System.out.println("Employee not found!");
-                t3.rollback();
-
-        	}
-        	break;
-        case 5 : 
-        	Transaction t4=s.beginTransaction();
-        	System.out.println("enter department id for update name : ");
-        	int id1 = sc.nextInt();
-        	sc.nextLine();
-        	System.out.println("enter department new name : ");
-        	String newNameD = sc.nextLine();
-        	
-        	Department updateD = s.get(Department.class, id1);
-        	if (updateD != null) {
-        		updateD.setDeptName(newNameD);
-        		s.merge(updateD);
-        		t4.commit();
-        		System.out.println("name updated successfully!");
-        	} else {
-        		System.out.println("department not found!");
-        		t4.rollback();
-        		
-        	}
-        	break;
-        	
-        case 6 : 
-        	Transaction t5=s.beginTransaction();
-        	System.out.println("enter employee id for delete : ");
-        	int id2 = sc.nextInt();
-        	sc.nextLine();
-        	
-        	Employee deleteE = s.get(Employee.class, id2);
-        	if (deleteE != null) {
-        		s.remove(deleteE);
-        		t5.commit();
-        		System.out.println("employee delete successfully!");
-        	} else {
-        		System.out.println("employee not found!");
-        		t5.rollback();
-        		
-        	}
-        	break;
-        	
-        case 7 : 
-        	Transaction t6=s.beginTransaction();
-        	System.out.println("enter department id for delete : ");
-        	int id3 = sc.nextInt();
-        	sc.nextLine();
-        	
-        	Department deleteD = s.get(Department.class, id3);
-        	if (deleteD != null) {
-        		s.remove(deleteD);
-        		t6.commit();
-        		System.out.println("department delete successfully!");
-        	} else {
-        		System.out.println("department not found!");
-        		t6.rollback();      		
-        	}
-        	break;
-        	
-        case 8 : 
-        	System.out.println("enter emplyoee id for fatch : ");
-        	int id4 = sc.nextInt();
-        	sc.nextLine();
-        	
-        	Employee fatchD = s.createQuery("from Employee where id = :id", Employee.class).setParameter("id", id4).getSingleResult();
-        	if (fatchD != null) {
-        		System.out.println(fatchD.getDepartment());
-        	} else {
-        		System.out.println("department not found!");
-        	}
-        	break;    	
-        case 9 : 
-        	System.out.println("enter emplyoee name for fatch : ");
-        	String Ename = sc.nextLine();
-        	
-        	List<Employee> fatchByname = s.createQuery("from Employee where name = :name", Employee.class).setParameter("name", Ename).getResultList();
-        	if (fatchByname != null) {
-        		for(Employee val:fatchByname) {
-        			System.out.println(val.getDepartment());
-        		}
-        		
-        	} else {
-        		System.out.println("department not found!");
-        	}
-        	break;   
-        	
-        case 10 :     
-        	
-        	List<Employee> fatchBySalary = s.createQuery("from Employee where salary > 25000", Employee.class).getResultList();
-        	if (fatchBySalary != null) {
-        		for(Employee val:fatchBySalary) {
-        			System.out.println(val);
-        		}
-        		
-        	} else {
-        		System.out.println("department not found!");
-        	}
-        	break; 
-        case 11 :    
-        	System.out.println("enter employe count in one department : ");
-        	int count = sc.nextInt();
-        	sc.nextLine();
-        	List<Department> fatchECount = s.createQuery("from Department d where size(d.employee) >= :n", Department.class).setParameter("n", count).getResultList();
-        	if (fatchECount != null) {
-        		for(Department val:fatchECount) {
-        			System.out.println(val);
-        		}
-        		
-        	} else {
-        		System.out.println("department not found!");
-        	}
-        	break; 
-        	
-        case 0 :    
-        	s.close();
-        	sessionFactory.close();
-        	break; 
-        
-        default : System.out.println("you enter rongh choice .");	
-        }
-        
-        
-        }
+             	System.out.println("enter id for update book price : ");
+             	int updatePrice = sc.nextInt();
+             	System.out.println("enter new price.");
+             	int newPrice = sc.nextInt();
+             	sc.nextLine();
+             	
+             	Books booksU = session.get(Books.class, updatePrice);
+             	if(booksU != null) {
+                 	booksU.setPrice(newPrice);
+                 	session.merge(booksU);
+                 	ts3.commit();
+             	} else {
+             		System.out.println("not found!!!");
+             	}
+             	break;
+             case 5 :
+            	 Transaction ts4 = session.beginTransaction();
+            	 
+            	 System.out.println("enter id for update library name : ");
+            	 int updateName = sc.nextInt();
+            	 sc.nextLine();
+            	 System.out.println("enter new name.");
+            	 String newName = sc.nextLine();
+            	 
+            	 Library LibraryU = session.get(Library.class, updateName);
+            	 if(LibraryU != null) {
+            		 LibraryU.setLibraryName(newName);
+            		 session.merge(LibraryU);
+            		 ts4.commit();
+            	 } else {
+            		 System.out.println("not found!!!");
+            	 }
+            	 break;
+             case 6 :
+            	 Transaction ts5 = session.beginTransaction();
+            	 
+            	 System.out.println("enter id for delete book : ");
+            	 int deleteBook = sc.nextInt();
+            	 sc.nextLine();
+            	 
+            	 Books BookD = session.get(Books.class, deleteBook);
+            	 if(BookD != null) {
+            		 session.remove(BookD);
+            		 ts5.commit();
+            	 } else {
+            		 System.out.println("not found!!!");
+            	 }
+            	 break;
+            	 
+             case 7 :
+            	 Transaction ts6 = session.beginTransaction();
+            	 
+            	 System.out.println("enter id for delete Library : ");
+            	 int deleteLibrary = sc.nextInt();
+            	 sc.nextLine();
+            	 
+            	 Library LibraryD = session.get(Library.class, deleteLibrary);
+            	 if(LibraryD != null) {
+            		 session.remove(LibraryD);
+            		 ts6.commit();
+            	 } else {
+            		 System.out.println("not found!!!");
+            	 }
+            	 break;
+            	 
+             case 8 :            	 
+            	 System.out.println("enter book title for fatch Library : ");
+            	 String booktitle = sc.nextLine();
+            	 
+            	 Books booksF = session.createQuery("from Books where title = :title", Books.class).setParameter("title", booktitle).getSingleResult(); 
+            	 if(booksF != null) {
+            		 System.out.println(booksF.getLibrary());
+            	 } else {
+            		 System.out.println("not found!!!");
+            	 }
+            	 break;
+             case 9 :            	 
+            	 System.out.println("enter Library name for fatch books : ");
+            	 String libraryNames = sc.nextLine();
+            	 
+            	 List<Library> LibraryF = session.createQuery("from Library where libraryName = :name", Library.class).setParameter("name", libraryNames).getResultList(); 
+            	 if(LibraryF != null) {
+            		 for(Library val:LibraryF) {
+            			 System.out.println(val.getBooks());
+            		 }
+            	 } else {
+            		 System.out.println("not found!!!");
+            	 }
+            	 break;
+             case 10 :            	 
+            	 System.out.println("list library with more then n books enter n : ");
+            	 int n = sc.nextInt();
+            	 sc.nextLine();
+            	 
+            	 List<Library> LibraryN = session.createQuery("from Library l where size(l.books) >= :n", Library.class).setParameter("n", n).getResultList(); 
+            	 if(LibraryN != null) {
+            		 for(Library val:LibraryN) {
+            			 System.out.println(val);
+            		 }
+            	 } else {
+            		 System.out.println("not found!!!");
+            	 }
+            	 break;
+            	     	
+             case 11 : 
+             	System.out.println("exit successfully.");	
+                 session.close();
+                 sessionFactory.close();
+                 return;
+              
+             default : System.out.println("enter valid case .");     
+             	
+             }
+         }         
     }
 }
